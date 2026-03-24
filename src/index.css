@@ -7,15 +7,44 @@
 
 :root {
   font-family: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  /* Dark theme colors (default) */
+  --bg-main: #050505;
+  --bg-sidebar: #0c0c0e;
+  --bg-sidebar-hover: rgba(255, 255, 255, 0.03);
+  --bg-active-note: rgba(79, 70, 229, 0.1);
+  --text-main: #e0e0e0;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --border-color: #1a1a1c;
+  --editor-text: #cbd5e1;
+  --toolbar-bg: rgba(18, 18, 20, 0.9);
+}
+
+[data-theme='light'] {
+  --bg-main: #fafafb;
+  --bg-sidebar: #ffffff;
+  --bg-sidebar-hover: rgba(0, 0, 0, 0.02);
+  --bg-active-note: rgba(79, 70, 229, 0.06);
+  --text-main: #1a1a1c;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --border-color: #eaebed;
+  --editor-text: #334155;
+  --toolbar-bg: rgba(255, 255, 255, 0.95);
 }
 
 body {
-  margin: 0;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Scrollbar styling */
+/* Custom styles for the contentEditable editor */
+[contenteditable] {
+  outline: none;
+}
+
+/* Scrollbar styles */
 .scrollbar-thin::-webkit-scrollbar {
   width: 4px;
 }
@@ -25,77 +54,53 @@ body {
 }
 
 .scrollbar-thin::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 4px;
+  background: var(--border-color);
+  border-radius: 10px;
 }
 
-.scrollbar-thin::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.1);
+/* Prose overrides */
+.prose {
+  max-width: none;
+  color: var(--editor-text);
 }
 
-/* Editor Typography */
-[contenteditable] {
-  outline: none;
-}
-
-[contenteditable] h1 {
-  font-size: 2.25rem;
-  font-weight: 800;
-  color: #f8fafc;
-  margin-bottom: 1.5rem;
-  margin-top: 2rem;
-}
-
-[contenteditable] h2 {
-  font-size: 1.875rem;
+.prose h1, .prose h2, .prose h3 {
+  color: var(--text-main);
   font-weight: 700;
-  color: #f1f5f9;
-  margin-bottom: 1.25rem;
-  margin-top: 1.75rem;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  font-family: var(--font-heading);
 }
 
-[contenteditable] h3 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #e2e8f0;
-  margin-bottom: 1rem;
+.prose p {
+  margin-bottom: 1.25em;
 }
 
-[contenteditable] ul {
-  list-style-type: disc;
-  padding-left: 1.5rem;
-  margin-bottom: 1rem;
+.prose ul, .prose ol {
+  margin-left: 1.5em;
+  margin-bottom: 1.25em;
 }
 
-[contenteditable] ol {
-  list-style-type: decimal;
-  padding-left: 1.5rem;
-  margin-bottom: 1rem;
+.prose li {
+  margin-bottom: 0.5em;
 }
 
-[contenteditable] p {
-  margin-bottom: 1rem;
+.prose strong {
+  color: var(--text-main);
+  font-weight: 700;
 }
 
-[contenteditable] a {
-  color: #818cf8;
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-
-[contenteditable] b, [contenteditable] strong {
-  font-weight: 800;
-  color: #fff;
-}
-
-[contenteditable] i, [contenteditable] em {
+.prose blockquote {
+  border-left: 4px solid var(--bg-active-note);
+  padding-left: 1em;
+  color: var(--text-secondary);
   font-style: italic;
-  color: #cbd5e1;
 }
 
 [contenteditable]:empty:before {
   content: attr(data-placeholder);
-  color: rgba(255, 255, 255, 0.25);
+  color: var(--text-muted);
+  opacity: 0.4;
   pointer-events: none;
   display: block;
 }
