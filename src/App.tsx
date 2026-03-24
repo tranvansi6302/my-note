@@ -1,24 +1,24 @@
-import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import {
-  Plus,
-  Search,
-  Trash2,
-  StickyNote,
-  FileText,
-  PanelLeftClose,
-  Star,
   Bold,
+  Component,
+  FileText,
   Italic,
-  Underline,
+  Link as LinkIcon,
   List,
   ListOrdered,
-  Type,
-  Link as LinkIcon,
   Menu,
-  X,
+  Moon,
+  PanelLeftClose,
+  Plus,
+  Search,
+  Star,
   Sun,
-  Moon
+  Trash2,
+  Type,
+  Underline,
+  X
 } from 'lucide-react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 // Types
 interface Note {
@@ -168,7 +168,7 @@ function App() {
         <div className="px-5 py-6 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-[4px] bg-indigo-500/10 flex items-center justify-center border border-indigo-500/20 shadow-lg group">
-              <StickyNote size={16} className="text-indigo-400 animate-spin [animation-duration:8s]" />
+              <Component size={16} className="text-indigo-400 animate-spin [animation-duration:8s]" />
             </div>
             <h1 className="text-sm font-semibold font-heading">Notebook</h1>
           </div>
@@ -201,7 +201,7 @@ function App() {
             filteredNotes.map(n => (
               <div
                 key={n.id} onClick={() => { setActiveNoteId(n.id); if (window.innerWidth < 1024) setIsSidebarOpen(false); }}
-                className={`group relative px-3 py-2.5 rounded-[4px] cursor-pointer transition-all ${activeNoteId === n.id ? 'bg-[var(--bg-active-note)]' : 'hover:bg-[var(--bg-sidebar-hover)]'}`}
+                className={`group relative px-5 py-2.5 rounded-[4px] cursor-pointer transition-all ${activeNoteId === n.id ? 'bg-[var(--bg-active-note)]' : 'hover:bg-[var(--bg-sidebar-hover)]'}`}
               >
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex-1 min-w-0">
@@ -229,7 +229,7 @@ function App() {
       <main className="flex-1 flex flex-col bg-[var(--bg-main)] relative min-w-0 transition-all duration-300">
         <header className="h-14 px-4 md:px-8 flex items-center justify-between shrink-0 border-b border-[var(--border-color)] lg:border-none">
           <div className="flex items-center gap-4">
-            <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className={`p-1.5 text-[var(--text-muted)] bg-[var(--bg-sidebar-hover)] rounded-[4px] lg:hidden mb-0`}><Menu size={18} /></button>
+            <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="p-1.5 text-[var(--text-muted)] bg-[var(--bg-sidebar-hover)] rounded-[4px] lg:hidden mb-0"><Menu size={18} /></button>
             <div className="text-[11px] text-[var(--text-muted)] font-medium truncate">
               {activeNote ? `Updated ${formatDate(activeNote.updatedAt)}` : 'Notebook'}
             </div>
@@ -267,16 +267,16 @@ function App() {
               </div>
             </div>
 
-            {/* Tight Toolbar Lock */}
-            <div className="absolute z-30 transition-all duration-300 pointer-events-none top-1/2 -translate-y-1/2 right-4 md:top-auto md:bottom-10 md:left-1/2 md:-translate-x-1/2 md:translate-y-0 flex justify-center w-full md:w-auto">
-              <div className="pointer-events-auto bg-[var(--toolbar-bg)] backdrop-blur-xl p-1.5 md:p-1.5 rounded-2xl md:rounded-full shadow-2xl flex flex-col md:flex-row items-center gap-0.5 md:gap-1 border border-[var(--border-color)]">
+            {/* Always Bottom Toolbar Dock */}
+            <div className="absolute z-30 transition-all duration-300 pointer-events-none bottom-8 md:bottom-10 left-1/2 -translate-x-1/2 flex justify-center w-full min-w-0 px-4">
+              <div className="pointer-events-auto bg-[var(--toolbar-bg)] backdrop-blur-xl p-1.5 md:p-1.5 rounded-full shadow-2xl flex flex-row items-center gap-0.5 md:gap-1 border border-[var(--border-color)] overflow-x-auto no-scrollbar max-w-full">
                 <ToolbarButton isActive={activeStyles.bold} onClick={() => execCommand('bold')} icon={<Bold className="w-4 h-4" />} label="Bold" />
                 <ToolbarButton isActive={activeStyles.italic} onClick={() => execCommand('italic')} icon={<Italic className="w-4 h-4" />} label="Italic" />
                 <ToolbarButton isActive={activeStyles.underline} onClick={() => execCommand('underline')} icon={<Underline className="w-4 h-4" />} label="Underline" />
-                <div className="h-[1px] w-4 md:h-5 md:w-[1px] bg-[var(--border-color)] my-1 md:mx-0.5 shrink-0" />
+                <div className="h-5 w-[1px] bg-[var(--border-color)] mx-0.5 md:mx-1 shrink-0" />
                 <ToolbarButton isActive={activeStyles.insertUnorderedList} onClick={() => execCommand('insertUnorderedList')} icon={<List className="w-4 h-4" />} label="Bullet list" />
                 <ToolbarButton isActive={activeStyles.insertOrderedList} onClick={() => execCommand('insertOrderedList')} icon={<ListOrdered className="w-4 h-4" />} label="Numbered list" />
-                <div className="h-[1px] w-4 md:h-5 md:w-[1px] bg-[var(--border-color)] my-1 md:mx-0.5 shrink-0" />
+                <div className="h-5 w-[1px] bg-[var(--border-color)] mx-0.5 md:mx-1 shrink-0" />
                 <ToolbarButton onClick={() => { const l = prompt('Level 1-3:', '1'); if (l) execCommand('formatBlock', `<h${l}>`); }} icon={<Type className="w-4 h-4" />} label="Heading" />
                 <ToolbarButton onClick={() => { const u = prompt('URL:'); if (u) execCommand('createLink', u); }} icon={<LinkIcon className="w-4 h-4" />} label="Link" />
               </div>
@@ -292,9 +292,10 @@ function ToolbarButton({ onClick, icon, label, isActive }: { onClick: () => void
   return (
     <button onClick={(e) => { e.preventDefault(); onClick(); }}
       className={`p-2 rounded-full transition-all group relative active:scale-90 shrink-0 ${isActive ? 'bg-indigo-600/30 text-indigo-400 shadow-inner' : 'text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--bg-sidebar-hover)]'}`}
+      title={label}
     >
       {icon}
-      <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 md:right-auto md:left-1/2 md:-translate-x-1/2 md:bottom-full md:top-auto md:mb-3 px-2 py-1 bg-[var(--text-main)] text-[var(--bg-main)] text-[10px] rounded-[4px] opacity-0 group-hover:opacity-100 pointer-events-none transition-all hidden lg:block whitespace-nowrap">{label}</span>
+      <span className="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 px-2 py-1 bg-[var(--text-main)] text-[var(--bg-main)] text-[10px] rounded-[4px] opacity-0 group-hover:opacity-100 pointer-events-none transition-all hidden lg:block whitespace-nowrap shadow-xl">{label}</span>
     </button>
   );
 }
