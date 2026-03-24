@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { 
-  Plus, 
-  Search, 
-  Trash2, 
-  StickyNote, 
-  FileText, 
-  PanelLeftClose, 
+import {
+  Plus,
+  Search,
+  Trash2,
+  StickyNote,
+  FileText,
+  PanelLeftClose,
   Star,
   Bold,
   Italic,
@@ -24,7 +24,7 @@ import {
 interface Note {
   id: string;
   title: string;
-  content: string; 
+  content: string;
   updatedAt: number;
   isFavorite?: boolean;
 }
@@ -37,7 +37,7 @@ function App() {
     const saved = localStorage.getItem(STORAGE_KEY);
     return saved ? JSON.parse(saved) : [];
   });
-  
+
   const [activeNoteId, setActiveNoteId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth > 1024);
@@ -46,7 +46,7 @@ function App() {
     const saved = localStorage.getItem(THEME_KEY);
     return (saved as 'dark' | 'light') || 'dark';
   });
-  
+
   const editorRef = useRef<HTMLDivElement>(null);
   const syncTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -77,9 +77,9 @@ function App() {
       .sort((a, b) => b.updatedAt - a.updatedAt);
   }, [notes, searchQuery]);
 
-  const activeNote = useMemo(() => 
+  const activeNote = useMemo(() =>
     notes.find(n => n.id === activeNoteId) || null
-  , [notes, activeNoteId]);
+    , [notes, activeNoteId]);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
@@ -184,7 +184,7 @@ function App() {
         <div className="px-4 mb-2">
           <div className="relative">
             <Search size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" />
-            <input 
+            <input
               type="text" placeholder="Search..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-[var(--bg-main)] border border-[var(--border-color)] rounded-[4px] py-1.5 pl-8 pr-3 text-xs focus:outline-none focus:border-indigo-500/30 transition-all placeholder:text-[var(--text-muted)]"
             />
@@ -199,7 +199,7 @@ function App() {
             </div>
           ) : (
             filteredNotes.map(n => (
-              <div 
+              <div
                 key={n.id} onClick={() => { setActiveNoteId(n.id); if (window.innerWidth < 1024) setIsSidebarOpen(false); }}
                 className={`group relative px-3 py-2.5 rounded-[4px] cursor-pointer transition-all ${activeNoteId === n.id ? 'bg-[var(--bg-active-note)]' : 'hover:bg-[var(--bg-sidebar-hover)]'}`}
               >
@@ -216,25 +216,25 @@ function App() {
         </div>
 
         <div className="p-4 border-t border-[var(--border-color)] bg-[var(--bg-sidebar)] flex items-center justify-between">
-           <div className="flex items-center gap-1">
-             <button onClick={() => setIsSidebarOpen(false)} className="p-1.5 text-[var(--text-muted)] hover:bg-[var(--bg-sidebar-hover)] rounded-[4px] hidden lg:block"><PanelLeftClose size={18} /></button>
-             <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} className="p-1.5 text-[var(--text-muted)] hover:bg-[var(--bg-sidebar-hover)] rounded-[4px]">
-               {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
-             </button>
-           </div>
-           <span className="text-[10px] text-[var(--text-muted)] font-medium uppercase tracking-tighter opacity-60">{notes.length} notes</span>
+          <div className="flex items-center gap-1">
+            <button onClick={() => setIsSidebarOpen(false)} className="p-1.5 text-[var(--text-muted)] hover:bg-[var(--bg-sidebar-hover)] rounded-[4px] hidden lg:block"><PanelLeftClose size={18} /></button>
+            <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} className="p-1.5 text-[var(--text-muted)] hover:bg-[var(--bg-sidebar-hover)] rounded-[4px]">
+              {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
+          </div>
+          <span className="text-[10px] text-[var(--text-muted)] font-medium uppercase tracking-tighter opacity-60">{notes.length} notes</span>
         </div>
       </aside>
 
       <main className="flex-1 flex flex-col bg-[var(--bg-main)] relative min-w-0 transition-all duration-300">
         <header className="h-14 px-4 md:px-8 flex items-center justify-between shrink-0 border-b border-[var(--border-color)] lg:border-none">
-           <div className="flex items-center gap-4">
-              <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className={`p-1.5 text-[var(--text-muted)] bg-[var(--bg-sidebar-hover)] rounded-[4px] lg:hidden mb-0`}><Menu size={18} /></button>
-              <div className="text-[11px] text-[var(--text-muted)] font-medium truncate">
-                {activeNote ? `Updated ${formatDate(activeNote.updatedAt)}` : 'Notebook'}
-              </div>
-           </div>
-          
+          <div className="flex items-center gap-4">
+            <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className={`p-1.5 text-[var(--text-muted)] bg-[var(--bg-sidebar-hover)] rounded-[4px] lg:hidden mb-0`}><Menu size={18} /></button>
+            <div className="text-[11px] text-[var(--text-muted)] font-medium truncate">
+              {activeNote ? `Updated ${formatDate(activeNote.updatedAt)}` : 'Notebook'}
+            </div>
+          </div>
+
           <div className="flex items-center gap-1">
             {activeNote && (
               <>
@@ -256,11 +256,11 @@ function App() {
           <div className="flex-1 relative flex flex-col overflow-hidden">
             <div className="flex-1 overflow-y-auto px-4 md:px-12 lg:px-20 pt-10 pb-40 scrollbar-thin">
               <div className="max-w-3xl mx-auto w-full">
-                <input 
+                <input
                   type="text" placeholder="Note title" value={activeNote.title} onChange={(e) => updateTitle(activeNote.id, e.target.value)}
                   className="w-full bg-transparent border-none text-2xl md:text-5xl font-bold font-heading text-[var(--text-main)] focus:outline-none mb-8 placeholder:text-[var(--text-muted)]/20"
                 />
-                <div 
+                <div
                   ref={editorRef} contentEditable data-placeholder="Start writing your thoughts..." onInput={handleInput}
                   className="w-full min-h-[500px] bg-transparent border-none text-base md:text-lg leading-relaxed text-[var(--editor-text)] focus:outline-none prose max-w-none pb-20"
                 />
@@ -277,8 +277,8 @@ function App() {
                 <ToolbarButton isActive={activeStyles.insertUnorderedList} onClick={() => execCommand('insertUnorderedList')} icon={<List className="w-4 h-4" />} label="Bullet list" />
                 <ToolbarButton isActive={activeStyles.insertOrderedList} onClick={() => execCommand('insertOrderedList')} icon={<ListOrdered className="w-4 h-4" />} label="Numbered list" />
                 <div className="h-[1px] w-4 md:h-5 md:w-[1px] bg-[var(--border-color)] my-1 md:mx-0.5 shrink-0" />
-                <ToolbarButton onClick={() => { const l = prompt('Level 1-3:', '1'); if(l) execCommand('formatBlock', `<h${l}>`); }} icon={<Type className="w-4 h-4" />} label="Heading" />
-                <ToolbarButton onClick={() => { const u = prompt('URL:'); if(u) execCommand('createLink', u); }} icon={<LinkIcon className="w-4 h-4" />} label="Link" />
+                <ToolbarButton onClick={() => { const l = prompt('Level 1-3:', '1'); if (l) execCommand('formatBlock', `<h${l}>`); }} icon={<Type className="w-4 h-4" />} label="Heading" />
+                <ToolbarButton onClick={() => { const u = prompt('URL:'); if (u) execCommand('createLink', u); }} icon={<LinkIcon className="w-4 h-4" />} label="Link" />
               </div>
             </div>
           </div>
