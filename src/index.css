@@ -94,7 +94,7 @@ body {
 }
 
 [contenteditable]:empty:before {
-  content: attr(placeholder);
+  content: attr(data-placeholder);
   color: rgba(255, 255, 255, 0.25);
   pointer-events: none;
   display: block;

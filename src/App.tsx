@@ -14,7 +14,6 @@ import {
   ListOrdered,
   Type,
   Link as LinkIcon,
-  History,
   Menu,
   X
 } from 'lucide-react';
@@ -43,7 +42,7 @@ function App() {
   const [activeStyles, setActiveStyles] = useState<{ [key: string]: boolean }>({});
 
   const editorRef = useRef<HTMLDivElement>(null);
-  const syncTimer = useRef<NodeJS.Timeout | null>(null);
+  const syncTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Resize listener
   useEffect(() => {
@@ -317,7 +316,7 @@ function App() {
                 <div
                   ref={editorRef}
                   contentEditable
-                  placeholder="Write something..."
+                  data-placeholder="Write something..."
                   onInput={handleInput}
                   className="w-full min-h-[500px] bg-transparent border-none text-base md:text-[17px] leading-[1.7] text-slate-400 focus:outline-none prose prose-invert max-w-none pb-20"
                 />
